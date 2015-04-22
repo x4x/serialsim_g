@@ -34,9 +34,85 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.popup import Popup
 
 from serialsim import sensor as seri
 from events2 import AssoziativHandler
+
+
+class StringTextInsertHelp(GridLayout):
+    """Contant for the string special chars help."""
+
+    def __init__(self, insert=Label(), *args, **kwargs):
+        """
+        :param insert: string in witch chosen char gets appended
+        """
+        super(StringTextInsertHelp, self).__init__(*args, **kwargs)
+        self.cols = 2
+        self.insert = insert
+
+        def insert_append(instance):
+            """append chosen char to string in Label."""
+            self.insert.text += instance.text
+            handler.calleble("l_helpDismiss")()
+
+        self.add_widget(Label(text=r"Backslash (\)", size_hint_x=1.6))
+        self.backslash = Button(text=r"\\")
+        self.backslash.bind(on_press=insert_append)
+        self.add_widget(self.backslash)
+
+        self.add_widget(Label(text=r"Single quote (')", size_hint_x=1))
+        self.singlequoute = Button(text=r"\'")
+        self.singlequoute.bind(on_press=insert_append)
+        self.add_widget(self.singlequoute)
+
+        self.add_widget(Label(text="Double quote (\")", size_hint_x=1))
+        self.dublequoute = Button(text=r"\'")
+        self.dublequoute.bind(on_press=insert_append)
+        self.add_widget(self.dublequoute)
+
+        self.add_widget(Label(text="ASCII Bell (BEL)", size_hint_x=1))
+        self.bell = Button(text=r"\a")
+        self.bell.bind(on_press=insert_append)
+        self.add_widget(self.bell)
+
+        self.add_widget(Label(text="ASCII Backspace (BS)", size_hint_x=1))
+        self.backspace = Button(text=r"\b")
+        self.backspace.bind(on_press=insert_append)
+        self.add_widget(self.backspace)
+
+        self.add_widget(Label(text="ASCII Formfeed (FF)", size_hint_x=1))
+        self.formfeed = Button(text=r"\f")
+        self.formfeed.bind(on_press=insert_append)
+        self.add_widget(self.formfeed)
+
+        self.add_widget(Label(text="ASCII Linefeed (LF)", size_hint_x=1))
+        self.linefeed = Button(text=r"\n")
+        self.linefeed.bind(on_press=insert_append)
+        self.add_widget(self.linefeed)
+
+        self.add_widget(Label(text="ASCII Carriage Return (CR)", size_hint_x=1))
+        self.carriagereturn = Button(text=r"\r")
+        self.carriagereturn.bind(on_press=insert_append)
+        self.add_widget(self.carriagereturn)
+
+        self.add_widget(Label(text="ASCII Horizontal Tab (TAB)", size_hint_x=1))
+        self.tab = Button(text=r"\t")
+        self.tab.bind(on_press=insert_append)
+        self.add_widget(self.tab)
+
+        self.add_widget(Label(text="ASCII char with octal value ooo", size_hint_x=1))
+        self.add_widget(Label(text=r"\ooo"))
+
+        self.add_widget(Label(text="ASCII char with hex value hh", size_hint_x=1))
+        self.add_widget(Label(text=r"\xhh"))
+
+        self.freestring = TextInput(multiline=False, text='')
+        self.add_widget(self.freestring)
+        self.setclose = Button(text='Close', size_hint_x=0.5)
+        self.setclose.bind(on_press=insert_append)
+        self.freestring.bind(on_text_validate=insert_append)
+        self.add_widget(self.setclose)
 
 
 class SerialConfig(GridLayout):
@@ -61,8 +137,16 @@ class SerialConfig(GridLayout):
         self.intervall.bind(text= handler.calleble("f_intervall"))
         self.add_widget(self.intervall)
 
-        self.add_widget(Label(text='Answer', size_hint_x=0.5))
+        # Popup for string special caracters help:
         self.answer = TextInput(multiline=False, text=r'\x02A,275,000.17,M,60,\x030E\r\n')
+        self.stringhelp_popup = Popup(title='String Help',
+                           content=StringTextInsertHelp(insert=self.answer),
+                           size_hint=(None, None), size=(500, 400))
+        self.stringhelp = Button(text='Answer (Help)', size_hint_x=0.5)
+        self.stringhelp.bind(on_press=self.stringhelp_popup.open)
+        self.add_widget(self.stringhelp)
+        # close string help:
+        handler.bind("l_helpDismiss", self.stringhelp_popup.dismiss)
         self.answer.bind(text= handler.calleble("f_Answer"))
         self.add_widget(self.answer)
 
@@ -175,19 +259,19 @@ class extern(object):
         self.toconfig = seri.sensor(com=None)
 
 
-    def s_stat(self, opt=None):
+    def s_stat(self, *args):
         if not self.sensor.isRuning:
             print("Start Button")
             self.sensor._config()
             self.sensor.start()
 
-    def s_stop(self, opt=None):
+    def s_stop(self, *args):
         if self.sensor.isRuning:
             print("Stop Button")
             self.sensor.stop()
             self.sensor._terminate()
 
-    def s_conf(self, opt=None):
+    def s_conf(self, *args):
         """take config from toconfig and initialise it."""
         if not self.sensor.isRuning:
             print("Config Button")

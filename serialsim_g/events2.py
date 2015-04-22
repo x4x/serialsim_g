@@ -57,7 +57,8 @@ class AssoziativHandler(dict):
             print("test num*2= " + str(num*2))
 
         a.add_calleble("test1", c)
-        a("test1", 2) # call
+        a("test1", 2) # call (slow)
+        a.calleble("test1")(2) # call (fast)
 
         # kivy ex.:
         ....
