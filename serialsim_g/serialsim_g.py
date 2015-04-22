@@ -24,6 +24,8 @@ Thema: serialsim
 Date: <2015-04-09 Donnerstag 11:57>
 Version:
 """
+from __future__ import print_function
+
 appname= "serialsim_g 0.0.1alfa"
 
 from kivy.app import App
@@ -92,19 +94,22 @@ class ControlPanel(GridLayout):
         self.rows = 1
         b_startstop = ToggleButton(text='Start/Stop', stat="normal",
                                    size_hint_x=1,
-                                   background_normal='', background_color=[0.8, 0, 0, 1])
-        #b_start = Button(text='Start/Stop', size_hint_x=1, background_normal='', background_color=[0.8, 0, 0, 1])
-        #b_stop = Button(text='Stop')
+                                   background_normal='', background_color=[0.8, 0, 0, 1],
+                                   background_down='')
         b_config = Button(text='Config', size_hint_x=0.5)
-        #self.add_widget(b_start)
-        #self.add_widget(b_stop)
         self.add_widget(b_startstop)
         self.add_widget(b_config)
-        #b_start.bind(on_press=handler.calleble("b_start"))
-        #b_stop.bind(on_press=handler.calleble("b_stop"))
         b_config.bind(on_press=handler.calleble("b_conf"))
-
-        #
+        # logic for toggelButton events:
+        b_startstop.bind(
+            state=lambda i, s: handler.calleble("b_stop")() if s == "normal" else handler.calleble("b_start")())
+        # set b_startstop Button color acording to status:
+        def startstop_off(*args):
+            b_startstop.background_color = [0.8, 0, 0, 1]
+        handler.bind("b_stop", startstop_off)
+        def startstop_on(*args):
+            b_startstop.background_color = [0, 0.8, 0, 1]
+        handler.bind("b_start", startstop_on)
 
         # set indicators of config Button:
         def config_not_set(*args , **kwargs):
