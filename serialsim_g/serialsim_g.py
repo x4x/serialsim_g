@@ -26,7 +26,7 @@ Version:
 """
 from __future__ import print_function
 
-appname= "serialsim_g 0.0.1alfa"
+appname= "serialsim_g 0.0.1beta"
 
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
@@ -110,7 +110,7 @@ class StringTextInsertHelp(GridLayout):
         self.freestring = TextInput(multiline=False, text='')
         self.add_widget(self.freestring)
         self.setclose = Button(text='Close', size_hint_x=0.5)
-        self.setclose.bind(on_press=insert_append)
+        self.setclose.bind(on_press=lambda i=None: handler.calleble("l_helpDismiss")())
         self.freestring.bind(on_text_validate=insert_append)
         self.add_widget(self.setclose)
 
