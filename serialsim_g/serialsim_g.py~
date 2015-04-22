@@ -1,0 +1,132 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+
+"""
+Grafical frontend for serialsim a serail sensors simulator.
+
+(C) 2015 x4x georg.la8585@gmx.at
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+Name: serialsim_g.py
+Info:
+Thema: serialsim
+Date: <2015-04-09 Donnerstag 11:57>
+Version:
+"""
+
+from kivy.app import App
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+
+from serialsim import sensor as seri
+from events2 import AssoziativHandler
+
+
+class SerialConfig(GridLayout):
+    def __init__(self, **kwargs):
+        super(SerialConfig, self).__init__(**kwargs)
+        self.cols = 2
+        self.add_widget(Label(text='Com'))
+        self.com = TextInput(multiline=False, text='/dev/ttyUSB0')
+        self.com.bind(text=handler("com"))
+        self.add_widget(self.com)
+
+        self.add_widget(Label(text='Boud'))
+        self.boud = TextInput(multiline=False, text='9600')
+        self.add_widget(self.boud)
+
+        self.add_widget(Label(text='Cont. Interval'))
+        self.interval = TextInput(multiline=False, text='1')
+        self.add_widget(self.interval)
+
+        self.add_widget(Label(text='Answer'))
+        self.answer = TextInput(multiline=False, text=r'\x02A,275,000.17,M,60,\x030E\r\n')
+        self.add_widget(self.answer)
+
+        self.add_widget(Label(text='Question'))
+        self.question = TextInput(multiline=False, text='?A')
+        self.add_widget(self.question)
+
+        self.add_widget(Label(text='Mode'))
+        self.mode = Button(text='poll')
+        self.add_widget(self.mode)
+
+
+class ControlPannel(GridLayout):
+    def __init__(self, **kwargs):
+        super(ControlPannel, self).__init__(**kwargs)
+        self.cols = 3
+        self.rows = 1
+        b_start = Button(text='Start')
+        b_stop = Button(text='Stop')
+        b_config = Button(text='Config')
+        self.add_widget(b_start)
+        self.add_widget(b_stop)
+        self.add_widget(b_config)
+        b_start.bind(on_press=handler.calleble("b_start"))
+        b_stop.bind(on_press=handler.calleble("b_stop"))
+        b_config.bind(on_press=handler.calleble("b_conf"))
+
+
+class MyApp(App):
+
+    def build(self):
+        # controll pennel:
+        controlslayout = GridLayout(cols=1, rows=2)
+        controlslayout.add_widget(SerialConfig())
+        controlslayout.add_widget(ControlPannel())
+        # data pennel:
+
+        # master layout:
+        layout = GridLayout(cols=2, rows=1)
+        layout.add_widget(Label(text='serial output'))
+        layout.add_widget(controlslayout)
+
+        handler.bind("b_start", io.s_stat)
+        handler.bind("b_stop", io.s_stop)
+        handler.bind("b_conf", io.s_conf)
+        handler.bind("com", io.s_text)
+
+        return layout
+
+
+class extern(object):
+    """interfaces to the non GUI staf sdfsdfsdf"""
+    def __init__(self):
+        self.sensor = seri.sensor(com=None)
+
+    def s_stat(self, opt=None):
+            print("call")
+            self.sensor._config()
+            self.sensor.start()
+
+    def s_stop(self, opt=None):
+            print("call2")
+            self.sensor.stop()
+            self.sensor._terminate()
+
+    def s_conf(self, opt=None):
+            print("call3")
+            self.sensor._config()
+
+    def s_text(self, val=None):
+            print(str(val))
+
+
+handler = AssoziativHandler()
+io = extern()
+if __name__ == '__main__':
+    MyApp().run()
