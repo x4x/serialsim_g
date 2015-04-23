@@ -25,6 +25,7 @@ Date: <2015-04-09 Donnerstag 11:57>
 Version:
 """
 from __future__ import print_function
+import sys
 
 appname= "serialsim_g 0.0.1beta"
 
@@ -35,9 +36,30 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
+from kivy.event import EventDispatcher
 
 from serialsim import sensor as seri
 from events2 import AssoziativHandler
+from serial import SerialException
+
+
+class LogWindow(GridLayout):
+    """event and serial log"""
+
+    def __init__(self, *args, **kwargs):
+        """ """
+        super(LogWindow, self).__init__(*args, **kwargs)
+        self.cols = 1
+
+        log = Label(text="""asdf.""", # TODO: make text left to right filling hole window
+                    markup=True,
+                    multiline=True, halign="left", valign="top",
+                    size_hint_y=1)
+        self.add_widget(Button(text="Log:", size_hint_y=0.1))
+        self.add_widget(log)
+        self.add_widget(Button(text="Export Log", size_hint_y=0.2)) # TODO: export log.text to file
+
+        # TODO: make serial in and output append to log.text with different markup colors acoding to source.
 
 
 class StringTextInsertHelp(GridLayout):
@@ -100,9 +122,6 @@ class StringTextInsertHelp(GridLayout):
         self.tab = Button(text=r"\t")
         self.tab.bind(on_press=insert_append)
         self.add_widget(self.tab)
-
-        self.add_widget(Label(text="ASCII char with octal value ooo", size_hint_x=1))
-        self.add_widget(Label(text=r"\ooo"))
 
         self.add_widget(Label(text="ASCII char with hex value hh", size_hint_x=1))
         self.add_widget(Label(text=r"\xhh"))
@@ -214,6 +233,34 @@ class ControlPanel(GridLayout):
             b_config.background_color = [1, 1, 1, 1]
         handler.bind("b_conf", reset_config_button)
 
+""" # kivys internel event handler
+class ErrorEvent(EventDispatcher):
+    def __init__(self, **kwargs):
+        self.register_event_type('on_error')
+        super(ErrorEvent, self).__init__(**kwargs)
+
+    def do_callerror(self, error):
+        # when do_something is called, the 'on_test' event will be
+        # dispatched with the value
+        self.dispatch('on_error')
+
+    def on_error(self, *args):
+        print("event")
+"""
+
+class ErrorPopup(Popup):
+    """Error message popup."""
+
+    def __init__(self, error=SerialException, *args, **kwargs):
+        """
+        :argument error: error element
+        """
+        super(ErrorPopup, self).__init__(**kwargs)
+        self.title = "Error"
+        self.content = Label(text="Serial Error {0}:\n{1}".format( str(error.errno), str(error.message)))
+        self.size_hint=(0.9, 0.25)
+        #self.size=(400, 400)
+
 
 class MyApp(App):
 
@@ -225,8 +272,8 @@ class MyApp(App):
         # data pennel:
 
         # master layout:
-        layout = GridLayout(cols=2, rows=1)
-        layout.add_widget(Label(text='serial output'))
+        layout = GridLayout(rows=1)
+        #layout.add_widget(LogWindow()) # TODO: add log window and log
         layout.add_widget(controlslayout)
 
         # function bindings for Buttons and Felds:
@@ -247,6 +294,13 @@ class MyApp(App):
         handler.bind("f_Answer", handler.calleble("l_config"))
         handler.bind("f_Question", handler.calleble("l_config"))
         handler.bind("f_mode", handler.calleble("l_config"))
+
+        # error popup
+        #erevents = ErrorEvent()
+        def error(error):
+            errpopup = ErrorPopup(error)
+            errpopup.open()
+        handler.bind("p_error", error)
 
         return layout
 
@@ -279,20 +333,24 @@ class extern(object):
 
     def s_stat(self, *args):
         if not self.sensor.isRuning:
-            print("Start Button")
-            self.sensor._config()
-            self.sensor.start()
+            #print("Start Button")
+            try: self.sensor._config()
+            except SerialException as e:
+                print("Serial Error {0}:  {1}".format(e.errno, e.message))
+                handler.calleble("p_error")(error=e)
+            else:
+                self.sensor.start()
 
     def s_stop(self, *args):
         if self.sensor.isRuning:
-            print("Stop Button")
+            #print("Stop Button")
             self.sensor.stop()
             self.sensor._terminate()
 
     def s_conf(self, *args):
         """take config from toconfig and initialise it."""
         if not self.sensor.isRuning:
-            print("Config Button")
+            #print("Config Button")
             self.sensor = self.toconfig
         else:
             handler.calleble("l_config")()
