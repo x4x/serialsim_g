@@ -156,7 +156,7 @@ class SerialConfig(GridLayout):
         self.add_widget(self.question)
 
         self.add_widget(Label(text='Mode', size_hint_x=0.5))
-        self.mode = Button(text='poll', background_normal='', background_color=[1, 0.5, 0, 1])
+        self.mode = Button(text='poll', font_size='20sp', background_normal='', background_color=[1, 0.5, 0, 1])
         self.mode.bind(on_press= handler.calleble("f_mode"))
         self.add_widget(self.mode)
         def toggle_mode_button(opt=None):
@@ -176,17 +176,24 @@ class ControlPanel(GridLayout):
         super(ControlPanel, self).__init__(**kwargs)
         self.cols = 3
         self.rows = 1
-        b_startstop = ToggleButton(text='Start/Stop', stat="normal",
+        b_startstop = ToggleButton(text='[size=28][b]Start[/b][/size]/Stop', stat="normal",
+                                   markup=True, font_size='20sp',
                                    size_hint_x=1,
                                    background_normal='', background_color=[0.8, 0, 0, 1],
                                    background_down='')
-        b_config = Button(text='Config', size_hint_x=0.5)
+        b_config = Button(text='Config', size_hint_x=0.5, font_size='20sp')
         self.add_widget(b_startstop)
         self.add_widget(b_config)
         b_config.bind(on_press=handler.calleble("b_conf"))
         # logic for toggelButton events:
         b_startstop.bind(
             state=lambda i, s: handler.calleble("b_stop")() if s == "normal" else handler.calleble("b_start")())
+        def b_startstop_textstart():
+            b_startstop.text= '[size=28][b]Start[/b][/size]/Stop'
+        handler.bind("b_stop", b_startstop_textstart)
+        def b_startstop_textstop():
+            b_startstop.text= 'Start/[size=28][b]Stop[/b][/size]'
+        handler.bind("b_start", b_startstop_textstop)
         # set b_startstop Button color acording to status:
         def startstop_off(*args):
             b_startstop.background_color = [0.8, 0, 0, 1]
@@ -255,8 +262,19 @@ class MyApp(App):
 class extern(object):
     """interfaces to the non GUI stuff."""
     def __init__(self):
-        self.sensor = seri.sensor(com=None)
-        self.toconfig = seri.sensor(com=None)
+        """"""
+        self.sensor = seri.sensor(mode=     "poll",
+                                  boud=     9600,
+                                  com=      "/dev/ttyUSB0",
+                                  interval= 1,
+                                  answer=   "\x02A,275,000.17,M,60,\x030E\r\n",
+                                  question= "?A")
+        self.toconfig = seri.sensor(mode=     "poll",
+                                  boud=     9600,
+                                  com=      "/dev/ttyUSB0",
+                                  interval= 1,
+                                  answer=   "\x02A,275,000.17,M,60,\x030E\r\n",
+                                  question= "?A")
 
 
     def s_stat(self, *args):
@@ -276,6 +294,8 @@ class extern(object):
         if not self.sensor.isRuning:
             print("Config Button")
             self.sensor = self.toconfig
+        else:
+            handler.calleble("l_config")()
 
     def s_com(self, opt=None, val=None):
         """set com in toconfig."""
@@ -291,11 +311,11 @@ class extern(object):
 
     def s_answer(self, opt=None, val=None):
         """set answer in toconfig."""
-        self.toconfig.answer = val
+        self.toconfig.answer = str(val).decode('string-escape')
 
     def s_question(self, opt=None, val=None):
         """set question in toconfig."""
-        self.toconfig.question = val
+        self.toconfig.question = str(val).decode('string-escape')
 
     def s_mode(self, opt=None):
         """toggel mode in toconfig."""
