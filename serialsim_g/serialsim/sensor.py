@@ -60,8 +60,10 @@ class sensor(object):
     def _terminate(self):
         """Terminate internels."""
         if(self.isRuning): self.stop()
-        del self.handler
+        #del self.handler
+        self.sim = sereialsim(sport=None, boud=self.boud, answer=self.answer, question=self.question)
         del self.sim
+        self.data_in_ptr = 0
         self.isRuning= False
         
     def start(self):
@@ -93,7 +95,7 @@ class sensor(object):
 
     def bind(self, on_question):
         """call if question is sent."""
-        handler.append(on_question)
+        self.handler.append(on_question)
     
 def main():
     """test cases:"""

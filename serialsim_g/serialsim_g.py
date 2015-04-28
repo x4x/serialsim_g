@@ -44,8 +44,8 @@ from events2 import AssoziativHandler
 from serial import SerialException
 
 
-appname= "serialsim_g 0.0.1beta"
-loghader= """Log file: {0}""".format(str(datetime.now()))
+appname = "serialsim_g 0.0.2beta"
+loghader = """Log file: {0}\n""".format(str(datetime.now()))
 
 class LogWindow(GridLayout):
     """event and serial log"""
@@ -56,10 +56,14 @@ class LogWindow(GridLayout):
         self.cols = 1
 
         log = TextInput(text= loghader,
-                    markup=True,
-                    multiline=True, halign="left", valign="top",
-                    size_hint_y=1)
-        self.add_widget(Button(text="Log:", size_hint_y=0.1))
+                        markup=True,
+                        multiline=True, halign="left", valign="top",
+                        size_hint_y=1)
+        self.b_clear = Button(text="Log clear", size_hint_y=0.1)
+        def clear_log(*args):
+            log.text = loghader
+        self.b_clear.bind(on_press=clear_log)
+        self.add_widget(self.b_clear)
         self.add_widget(log)
         self.b_export = Button(text="Export Log", size_hint_y=0.2)
         self.b_export.textout = log.text
@@ -68,10 +72,49 @@ class LogWindow(GridLayout):
 
         # put serial input in log.text:
         def append_text(*args):
-            log.text += io.get_data_in()
-        Clock.schedule_interval(append_text, 1)
+            try: log.text += io.get_data_in()
+            except: pass
+        clock = Clock.schedule_interval(append_text, 1)
 
         # TODO: make serial in and output append to log.text with different markup colors according to source.
+
+class StringPreMadeText(GridLayout):
+    """insert a pre made sensor sting from list"""
+
+    def __init__(self, insert=Label(), *args, **kwargs):
+        """
+        :param insert: string in witch chosen char gets appended
+        """
+        super(StringPreMadeText, self).__init__(*args, **kwargs)
+        self.cols = 2
+        self.insert = insert
+
+        def insert(instance):
+            """append chosen char to string in Label."""
+            self.insert.text = instance.text
+            handler.calleble("l_helpDismiss")()
+
+        self.add_widget(Label(text="Wind Sonic", size_hint_x=0.3))
+        self.windsonic = Button(text=r"\x02A,275,040.17,M,60,\x030E\r\n")
+        self.windsonic.bind(on_press=insert)
+        self.add_widget(self.windsonic)
+
+        self.add_widget(Label(text="Wind Observer", size_hint_x=0.3))
+        self.windobserver = Button(text=r"\x02A,275,000.17,M,60,\x030E\r\n")
+        self.windobserver.bind(on_press=insert)
+        self.add_widget(self.windobserver)
+
+        self.add_widget(Label(text="Wind Master", size_hint_x=0.3))
+        self.windmaster = Button(text=r"\x02A,275,000.17,M,60,\x030E\r\n")
+        self.windmaster.bind(on_press=insert)
+        self.add_widget(self.windmaster)
+
+        self.freestring = TextInput(multiline=False, text='')
+        self.setclose = Button(text='Close')
+        self.setclose.bind(on_press=lambda i=None: handler.calleble("l_helpDismiss")())
+        self.freestring.bind(on_text_validate=insert)
+        self.add_widget(self.setclose)
+        self.add_widget(self.freestring)
 
 
 class StringTextInsertHelp(GridLayout):
@@ -170,7 +213,11 @@ class SerialConfig(GridLayout):
 
         # Popup for string special caracters help:
         self.answer = TextInput(multiline=False, text=r'\x02A,275,000.17,M,60,\x030E\r\n')
-        self.stringhelp_popup = Popup(title='String Help',
+        self.premadestings_popup = Popup(title="Pre made sensor strings:",
+                                         content=StringPreMadeText(insert=self.answer),
+                                         size_hint=(None, None), size=(500, 400))
+        self.answer.bind(on_triple_tap=self.premadestings_popup.open)
+        self.stringhelp_popup = Popup(title="String Help\nTap 3 times in answer field for premade strings!",
                            content=StringTextInsertHelp(insert=self.answer),
                            size_hint=(None, None), size=(500, 400))
         self.stringhelp = Button(text='Answer (Help)', size_hint_x=0.5)
@@ -178,6 +225,7 @@ class SerialConfig(GridLayout):
         self.add_widget(self.stringhelp)
         # close string help:
         handler.bind("l_helpDismiss", self.stringhelp_popup.dismiss)
+        handler.bind("l_helpDismiss", self.premadestings_popup.dismiss)
         self.answer.bind(text= handler.calleble("f_Answer"))
         self.add_widget(self.answer)
 
@@ -230,8 +278,14 @@ class ControlPanel(GridLayout):
             b_startstop.background_color = [0.8, 0, 0, 1]
         handler.bind("b_stop", startstop_off)
         def startstop_on(*args):
-            b_startstop.background_color = [0, 0.8, 0, 1]
+            b_startstop.background_color = [0, 0.5, 0, 1]
         handler.bind("b_start", startstop_on)
+        def serial_acht(*args):
+            """let start/stop button blink once if serial activity"""
+            b_startstop.background_color = [0, 1, 0, 1]
+            def setback(*args): b_startstop.background_color = [0, 0.5, 0, 1]
+            Clock.schedule_once(setback, 0.2)
+        handler.bind("serial_out", serial_acht)
 
         # set indicators of config Button:
         def config_not_set(*args , **kwargs):
