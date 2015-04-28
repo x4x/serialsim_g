@@ -35,6 +35,7 @@ from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.event import EventDispatcher
+from kivy.clock import Clock
 
 from datetime import datetime
 
@@ -65,7 +66,12 @@ class LogWindow(GridLayout):
         self.add_widget(self.b_export)
         self.b_export.bind(on_press=handler.calleble("b_w-log"))
 
-        # TODO: make serial in and output append to log.text with different markup colors acoding to source.
+        # put serial input in log.text:
+        def append_text(*args):
+            log.text += io.get_data_in()
+        Clock.schedule_interval(append_text, 1)
+
+        # TODO: make serial in and output append to log.text with different markup colors according to source.
 
 
 class StringTextInsertHelp(GridLayout):
@@ -348,6 +354,8 @@ class extern(object):
                 handler.calleble("p_error")(error=e)
             else:
                 self.sensor.start()
+                # add data out put event
+                self.sensor.bind(handler.calleble("serial_out"))
 
     def s_stop(self, *args):
         if self.sensor.isRuning:
@@ -397,6 +405,11 @@ class extern(object):
         f = open("log"+str(time.now().date())+'_'+str(time.time())[:8].replace(':', '-')+".txt", mode='w')
         f.write(instance.textout)
         f.close()
+
+    def get_data_in(self):
+        """:return : input data from interface"""
+        return self.sensor.get_in()
+
 
 handler = AssoziativHandler()
 io = extern()

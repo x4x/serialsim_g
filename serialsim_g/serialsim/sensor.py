@@ -38,21 +38,24 @@ class sensor(object):
                  interval= 1,
                  answer=   "\x02A,275,000.17,M,60,\x030E\r\n",
                  question= "?A"):
-        self.mode=     mode   
-        self.boud=     boud   
-        self.com=      com  
-        self.interval= interval
-        self.answer=   answer
-        self.question= question
-        self.isRuning= False
+        self.mode =     mode
+        self.boud =     boud
+        self.com =      com
+        self.interval = interval
+        self.answer =   answer
+        self.question = question
+        self.isRuning = False
+
+        self.sim = sereialsim(sport=None, boud=self.boud, answer=self.answer, question=self.question)
+        self.data_in_ptr = 0
         #self._config()
     
     def _config(self):
         """configure the mode"""
-        self.handler= handler() # event handler erzeugen!
-        self.sim= sereialsim(sport=self.com, boud=self.boud, answer=self.answer, question=self.question)
+        self.handler = handler()  # create event handler
+        self.sim = sereialsim(sport=self.com, boud=self.boud, answer=self.answer, question=self.question)
         self.handler.append(self.sim) # hook output to eventhandler
-        self.isRuning= False
+        self.isRuning = False
 
     def _terminate(self):
         """Terminate internels."""
@@ -80,6 +83,17 @@ class sensor(object):
             elif(self.mode=="poll"): # polled
                 self.sim.handler.remove(self.handler)
             self.isRuning= False
+
+    def get_in(self):
+        """get the serial input.
+        :return entire input."""
+        r = self.sim.data_in[self.data_in_ptr:]
+        self.data_in_ptr = len(self.sim.data_in)
+        return r
+
+    def bind(self, on_question):
+        """call if question is sent."""
+        handler.append(on_question)
     
 def main():
     """test cases:"""

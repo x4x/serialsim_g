@@ -44,13 +44,17 @@ class sereialsim(object):
                                          'c2' continous 2sec
                                          'p'  polled (wating for question string)
          call  object to call if event (set to self)
-        """
-        self.question=question
-        self.answer=answer
-        self.data=""
-        self.handler= handler()
 
-        self.serial=serial.Serial(port=sport, baudrate=boud, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=0 )
+         :var data_in: string with entire serial input data
+        """
+        self.question = question
+        self.answer = answer
+        self._data = ""
+        self.data_in = ""
+        self.handler = handler()
+
+        self.serial = serial.Serial(port=sport, baudrate=boud, bytesize=8, parity='N',
+                                  stopbits=1, timeout=None, xonxoff=0, rtscts=0)
 
     def setBoud(self, boud):
         """reset boudrate
@@ -78,16 +82,17 @@ class sereialsim(object):
 
     def setpoll(self):
         """"starts a thread and wates for the question string.
-        If string is ditechted the object in call is called."""
+        If string is detected the object in call is called."""
         def _event():
             while(self.serial.isOpen()):
-                self.data=self.serial.read(len(self.question))
-                self.data+= self.serial.read(self.serial.inWaiting())
-                if(self.data.find(self.question) >= 0):
+                self._data = self.serial.read(len(self.question))
+                self._data += self.serial.read(self.serial.inWaiting())
+                self.data_in += self._data  # append to entire data string
+                if(self._data.find(self.question) >= 0):
                     self.handler()
             
-        self.poll= threading.Thread(target=_event)
-        self.poll.daemon= True #allow kiling of the thread
+        self.poll = threading.Thread(target=_event)
+        self.poll.daemon = True  #allow killing of the thread
         self.poll.start()
 
     
@@ -99,7 +104,7 @@ if __name__=="__main__":
     #a.start()
     a()
     print " handler test:"
-    def printfun(): print(a.data)
+    def printfun(): print(a._data)
     a.handler.append(printfun) # print input
     a.handler.append(a) # return answer
     a.setpoll() #start polled mode
