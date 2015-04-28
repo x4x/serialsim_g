@@ -27,8 +27,6 @@ Version:
 from __future__ import print_function
 import sys
 
-appname= "serialsim_g 0.0.1beta"
-
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -38,10 +36,15 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.event import EventDispatcher
 
+from datetime import datetime
+
 from serialsim import sensor as seri
 from events2 import AssoziativHandler
 from serial import SerialException
 
+
+appname= "serialsim_g 0.0.1beta"
+loghader= """Log file: {0}""".format(str(datetime.now()))
 
 class LogWindow(GridLayout):
     """event and serial log"""
@@ -51,13 +54,16 @@ class LogWindow(GridLayout):
         super(LogWindow, self).__init__(*args, **kwargs)
         self.cols = 1
 
-        log = Label(text="""asdf.""", # TODO: make text left to right filling hole window
+        log = TextInput(text= loghader,
                     markup=True,
                     multiline=True, halign="left", valign="top",
                     size_hint_y=1)
         self.add_widget(Button(text="Log:", size_hint_y=0.1))
         self.add_widget(log)
-        self.add_widget(Button(text="Export Log", size_hint_y=0.2)) # TODO: export log.text to file
+        self.b_export = Button(text="Export Log", size_hint_y=0.2)
+        self.b_export.textout = log.text
+        self.add_widget(self.b_export)
+        self.b_export.bind(on_press=handler.calleble("b_w-log"))
 
         # TODO: make serial in and output append to log.text with different markup colors acoding to source.
 
@@ -273,7 +279,7 @@ class MyApp(App):
 
         # master layout:
         layout = GridLayout(rows=1)
-        #layout.add_widget(LogWindow()) # TODO: add log window and log
+        layout.add_widget(LogWindow())  # TODO: add log window and log
         layout.add_widget(controlslayout)
 
         # function bindings for Buttons and Felds:
@@ -294,6 +300,8 @@ class MyApp(App):
         handler.bind("f_Answer", handler.calleble("l_config"))
         handler.bind("f_Question", handler.calleble("l_config"))
         handler.bind("f_mode", handler.calleble("l_config"))
+        # log file output:
+        handler.bind("b_w-log", io.to_file)
 
         # error popup
         #erevents = ErrorEvent()
@@ -381,6 +389,14 @@ class extern(object):
             self.toconfig.mode = "cont"
         else:
             self.toconfig.mode = "poll"
+
+    def to_file(self, instance):
+        """write text to file
+        writes text in the 'textout' variable of the calling instance"""
+        time = datetime.now()
+        f = open("log"+str(time.now().date())+'_'+str(time.time())[:8].replace(':', '-')+".txt", mode='w')
+        f.write(instance.textout)
+        f.close()
 
 handler = AssoziativHandler()
 io = extern()
