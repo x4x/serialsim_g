@@ -38,6 +38,7 @@ from kivy.event import EventDispatcher
 from kivy.clock import Clock
 
 from datetime import datetime
+import xmltodict
 
 from serialsim import sensor as seri
 from events2 import AssoziativHandler
@@ -94,20 +95,16 @@ class StringPreMadeText(GridLayout):
             self.insert.text = instance.text
             handler.calleble("l_helpDismiss")()
 
-        self.add_widget(Label(text="Wind Sonic", size_hint_x=0.3))
-        self.windsonic = Button(text=r"\x02A,275,040.17,M,60,\x030E\r\n")
-        self.windsonic.bind(on_press=insert)
-        self.add_widget(self.windsonic)
-
-        self.add_widget(Label(text="Wind Observer", size_hint_x=0.3))
-        self.windobserver = Button(text=r"\x02A,275,000.17,M,60,\x030E\r\n")
-        self.windobserver.bind(on_press=insert)
-        self.add_widget(self.windobserver)
-
-        self.add_widget(Label(text="Wind Master", size_hint_x=0.3))
-        self.windmaster = Button(text=r"\x02A,275,000.17,M,60,\x030E\r\n")
-        self.windmaster.bind(on_press=insert)
-        self.add_widget(self.windmaster)
+        self.sensor_strs = []
+        for each in xml["conf"]["sensor"]:
+            self.add_widget(Label(text=each["name"], size_hint_x=0.3))
+            #self.add_widget(Label(text="Wind Sonic", size_hint_x=0.3))
+            #self.windsonic = Button(text=r"\x02A,275,040.17,M,60,\x030E\r\n").bind(on_press=insert)
+            #self.windsonic.bind(on_press=insert)
+            #self.add_widget(self.windsonic)
+            self.sensor_strs.append(Button(text=each["str"]))
+            self.sensor_strs[-1].bind(on_press=insert)
+            self.add_widget(self.sensor_strs[-1])
 
         self.freestring = TextInput(multiline=False, text='')
         self.setclose = Button(text='Close')
@@ -465,7 +462,18 @@ class extern(object):
         return self.sensor.get_in()
 
 
+# --- Global stuff: ----
+
+def load_string_samples():
+    """load the xml config with the Pre made sting samples.
+    :return dict: with xml config"""
+    # read xml file and convert it do a dict.
+    with open('stringsamples.xml') as fd:
+         xml = xmltodict.parse(fd.read())
+    return xml
+
 handler = AssoziativHandler()
 io = extern()
+xml = load_string_samples()
 if __name__ == '__main__':
     MyApp().run()
