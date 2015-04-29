@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <conf>
     <title>serialsim_g 0.0.2beta</title>
-    <log_title>Log file: {0}\n</log_title>
+    <log_title>Log file: {0}</log_title>
     <sensor>
         <name>WindObserver</name>
         <str>\x02A,275,040.17,M,60,\x030E\r\n</str>

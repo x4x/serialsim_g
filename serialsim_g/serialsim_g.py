@@ -470,7 +470,7 @@ io = extern()
 xml = load_string_samples()
 # global name strings:
 appname = xml["conf"]["title"]
-loghader = xml["conf"]["log_title"].format(str(datetime.now()))
+loghader = xml["conf"]["log_title"].format(str(datetime.now())) + "\n"
 
 if __name__ == '__main__':
     MyApp().run()
