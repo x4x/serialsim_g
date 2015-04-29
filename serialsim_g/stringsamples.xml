@@ -10,4 +10,8 @@
         <name>WindSonic</name>
         <str>\x02A,275,045.17,M,60,\x030E\r\n</str>
     </sensor>
+    <sensor>
+        <name>WindSonic</name>
+        <str>\x02A,275,045.17,M,60,\x030E\r\n</str>
+    </sensor>
 </conf>

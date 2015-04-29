@@ -34,7 +34,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
-from kivy.event import EventDispatcher
+#from kivy.event import EventDispatcher
 from kivy.clock import Clock
 
 from datetime import datetime
@@ -44,9 +44,6 @@ from serialsim import sensor as seri
 from events2 import AssoziativHandler
 from serial import SerialException
 
-
-appname = "serialsim_g 0.0.2beta"
-loghader = """Log file: {0}\n""".format(str(datetime.now()))
 
 class LogWindow(GridLayout):
     """event and serial log"""
@@ -98,10 +95,6 @@ class StringPreMadeText(GridLayout):
         self.sensor_strs = []
         for each in xml["conf"]["sensor"]:
             self.add_widget(Label(text=each["name"], size_hint_x=0.3))
-            #self.add_widget(Label(text="Wind Sonic", size_hint_x=0.3))
-            #self.windsonic = Button(text=r"\x02A,275,040.17,M,60,\x030E\r\n").bind(on_press=insert)
-            #self.windsonic.bind(on_press=insert)
-            #self.add_widget(self.windsonic)
             self.sensor_strs.append(Button(text=each["str"]))
             self.sensor_strs[-1].bind(on_press=insert)
             self.add_widget(self.sensor_strs[-1])
@@ -475,5 +468,9 @@ def load_string_samples():
 handler = AssoziativHandler()
 io = extern()
 xml = load_string_samples()
+# global name strings:
+appname = xml["conf"]["title"]
+loghader = xml["conf"]["log_title"].format(str(datetime.now()))
+
 if __name__ == '__main__':
     MyApp().run()

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py" line="438" />
+    <bookmark url="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py" line="431" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84f1783d-da7c-4eb6-987a-50b605d68bc0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/serialsim_g/stringsamples.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serialsim_g/serialsim_g.py" afterPath="$PROJECT_DIR$/serialsim_g/serialsim_g.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serialsim_g/stringsamples.xml" afterPath="$PROJECT_DIR$/serialsim_g/stringsamples.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="serialsim_g.iws" />
@@ -34,8 +34,8 @@
       <file leaf-file-name="serialsim_g.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.74127907" vertical-offset="1335" max-vertical-offset="7275">
-              <caret line="106" column="47" selection-start-line="106" selection-start-column="47" selection-end-line="106" selection-end-column="47" />
+            <state vertical-scroll-proportion="-1.4825581" vertical-offset="1035" max-vertical-offset="7230">
+              <caret line="35" column="32" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
               <folding>
                 <element signature="e#917#954#0" expanded="true" />
               </folding>
@@ -46,8 +46,8 @@
       <file leaf-file-name="stringsamples.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/serialsim_g/stringsamples.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
+              <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -413,7 +413,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430228347862</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="pre made config strings now from xml config file.">
+      <created>1430299206959</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1430299206959</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -440,6 +446,7 @@
     <frame x="0" y="0" width="1358" height="733" extended-state="4" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3279743" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3279743" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -456,7 +463,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39871383" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -485,7 +491,8 @@
     <MESSAGE value="made log window text exporteble to file" />
     <MESSAGE value="first log window test" />
     <MESSAGE value="encluded menue with pree made stings and made teh start buton blink by serial activity." />
-    <option name="LAST_COMMIT_MESSAGE" value="encluded menue with pree made stings and made teh start buton blink by serial activity." />
+    <MESSAGE value="pre made config strings now from xml config file." />
+    <option name="LAST_COMMIT_MESSAGE" value="pre made config strings now from xml config file." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -704,14 +711,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/serialsim_g/stringsamples.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/dist-packages/Kivy-1.8.0-py2.7-linux-x86_64.egg/kivy/uix/layout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.59302324" vertical-offset="891" max-vertical-offset="1335">
@@ -720,10 +719,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/serialsim_g/stringsamples.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
+          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74127907" vertical-offset="1335" max-vertical-offset="7275">
-          <caret line="106" column="47" selection-start-line="106" selection-start-column="47" selection-end-line="106" selection-end-column="47" />
+        <state vertical-scroll-proportion="-1.4825581" vertical-offset="1035" max-vertical-offset="7230">
+          <caret line="35" column="32" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
           <folding>
             <element signature="e#917#954#0" expanded="true" />
           </folding>
