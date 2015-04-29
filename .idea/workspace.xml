@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="84f1783d-da7c-4eb6-987a-50b605d68bc0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serialsim_g/serialsim_g.py" afterPath="$PROJECT_DIR$/serialsim_g/serialsim_g.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serialsim_g/stringsamples.xml" afterPath="$PROJECT_DIR$/serialsim_g/stringsamples.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="serialsim_g.iws" />
@@ -34,8 +33,8 @@
       <file leaf-file-name="serialsim_g.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6947674" vertical-offset="6841" max-vertical-offset="7230">
-              <caret line="472" column="69" selection-start-line="472" selection-start-column="69" selection-end-line="472" selection-end-column="69" />
+            <state vertical-scroll-proportion="0.74489796" vertical-offset="6642" max-vertical-offset="7230">
+              <caret line="472" column="75" selection-start-line="472" selection-start-column="75" selection-end-line="472" selection-end-column="75" />
               <folding>
                 <element signature="e#917#954#0" expanded="true" />
               </folding>
@@ -95,6 +94,7 @@
         <option value="$PROJECT_DIR$/serialsim_g/serialsim/sim.py" />
         <option value="$PROJECT_DIR$/serialsim_g/serialsim/sensor.py" />
         <option value="$PROJECT_DIR$/serialsim_g/stringsamples.xml" />
+        <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/serialsim_g/serialsim_g.py" />
       </list>
     </option>
@@ -425,7 +425,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430299584031</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="newline addet to log sting">
+      <created>1430299662954</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1430299662954</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -459,7 +465,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24943988" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29932484" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39674798" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39674798" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -499,7 +505,8 @@
     <MESSAGE value="encluded menue with pree made stings and made teh start buton blink by serial activity." />
     <MESSAGE value="pre made config strings now from xml config file." />
     <MESSAGE value="log text from xml file" />
-    <option name="LAST_COMMIT_MESSAGE" value="log text from xml file" />
+    <MESSAGE value="newline addet to log sting" />
+    <option name="LAST_COMMIT_MESSAGE" value="newline addet to log sting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -736,8 +743,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/serialsim_g/serialsim_g.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6947674" vertical-offset="6841" max-vertical-offset="7230">
-          <caret line="472" column="69" selection-start-line="472" selection-start-column="69" selection-end-line="472" selection-end-column="69" />
+        <state vertical-scroll-proportion="0.74489796" vertical-offset="6642" max-vertical-offset="7230">
+          <caret line="472" column="75" selection-start-line="472" selection-start-column="75" selection-end-line="472" selection-end-column="75" />
           <folding>
             <element signature="e#917#954#0" expanded="true" />
           </folding>

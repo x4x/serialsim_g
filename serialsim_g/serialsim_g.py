@@ -94,8 +94,8 @@ class StringPreMadeText(GridLayout):
 
         self.sensor_strs = []
         for each in xml["conf"]["sensor"]:
-            self.add_widget(Label(text=each["name"], size_hint_x=0.3))
-            self.sensor_strs.append(Button(text=each["str"]))
+            self.add_widget(Label(text=str(each["name"]), size_hint_x=0.3))
+            self.sensor_strs.append(Button(text=str(each["str"])))
             self.sensor_strs[-1].bind(on_press=insert)
             self.add_widget(self.sensor_strs[-1])
 
@@ -469,8 +469,8 @@ handler = AssoziativHandler()
 io = extern()
 xml = load_string_samples()
 # global name strings:
-appname = xml["conf"]["title"]
-loghader = xml["conf"]["log_title"].format(str(datetime.now())) + "\n"
+appname = str(xml["conf"]["title"])
+loghader = str(xml["conf"]["log_title"].format(str(datetime.now())) + "\n")
 
 if __name__ == '__main__':
     MyApp().run()
