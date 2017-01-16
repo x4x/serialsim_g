@@ -6,3 +6,7 @@ pyserial
 
 # config
 xmltodict
+
+# cmd
+docopt
+cmd2
