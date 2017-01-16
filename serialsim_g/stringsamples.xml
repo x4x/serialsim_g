@@ -4,7 +4,7 @@
     <log_title>Log file: {0}</log_title>
     <sensor>
         <name>WindObserver</name>
-        <str>\x02A,275,040.17,M,60,\x030E\r\n</str>
+        <str>\x02A,212,000.04,M,+027.59,60,\x0315\r\n</str>
     </sensor>
     <sensor>
         <name>WindSonic</name>
